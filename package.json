@@ -1,0 +1,14 @@
+{
+    "name": "TestingCheatSheet",
+    "description": "Mocha, Chai Expect Cheat Sheet",
+    "version": "1.0.0",
+    "private": true,
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/zsolt-nagy/mocha-chai-sinon-cheatsheet.git"
+    },
+    "dependencies": {
+      "chai": "~2.2.0",
+      "mocha": "~2.2.1"        
+    }
+}
