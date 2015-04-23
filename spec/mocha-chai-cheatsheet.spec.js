@@ -123,7 +123,7 @@ describe( 'Mocha, Chai Expect Cheat Sheet', function() {
 
 		// contain expressed without contain
 		expect( [1, 3, 5].indexOf( 3 ) ).to.not.equal( -1 );
-	} );
+	} );	
 
 	it( 'should check keys of an object', function() {
 		var jsonPayload =
@@ -204,3 +204,69 @@ describe( 'Mocha, Chai Expect Cheat Sheet', function() {
 		expect( testWrapper ).to.Throw( 'Server Error' );
 	} );
 } );
+
+
+describe("Test with fixture", function()
+{
+    before( function()
+    {
+        this.$fixture = $('<div id="view-fixture"></div>');
+    } );
+
+    beforeEach( function() {
+       this.$fixture.empty().appendTo( $( '#fixtures' ) );
+       this.$fixture.prepend( '<div id="seasons"></div>' );
+       seasonsView.render();
+    } );
+
+    afterEach( function() {
+        $( '#fixtures' ).empty();
+    } );
+
+    it( 'should display Spring, Summer, Autumn and Winter', function() {
+        var mapFunction = function( item ) { 
+            return item.innerHTML;
+        }
+        var $seasons = this.$fixture.find( '.js-season' ); 
+        var seasonNames = _.map( $seasons, mapFunction );
+        expect( seasonNames ).to.contain( 'Spring' );
+        expect( seasonNames ).to.contain( 'Summer' );
+        expect( seasonNames ).to.contain( 'Autumn' );
+        expect( seasonNames ).to.contain( 'Winter' );
+    });
+
+    it( 'should display four seasons.', function() {
+        var seasonNodes = this.$fixture.find( '.js-season' );
+        expect( seasonNodes ).to.have.length( 4 );
+    });
+} );
+
+
+describe( 'Asynchronous Tests', function() {
+	before( function() {
+        this.timeModel = new TimeModel();
+	});
+
+	it( 'should find the correct keys after fetching the model', 
+        function( testIsDone ) {
+            var callback = function() { 
+                var expectedKeys = 
+                    [ 'date', 'milliseconds_since_epoch', 'time' ];  
+                expect( this.timeModel.attributes ).to
+                    .have.keys( expectedKeys );    
+
+                // Tell Mocha when the test should finish
+                testIsDone();        
+            }
+		    this.timeModel.fetch().done( 
+		    	_.bind( callback, this ) 
+		    );
+	});
+});
+
+
+
+
+
+
+
