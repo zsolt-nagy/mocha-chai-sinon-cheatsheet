@@ -561,6 +561,94 @@ describe( 'SinonJs Spies', function() {
 } );
 
 
+describe( 'SinonJs Stubs', function() {
+
+    beforeEach( function() {
+        this.f = sinon.stub();
+    });
+
+    it( 'should demonstrate stubbing js/player.js getCoordinates()', function() {
+		expect( player.getCoordinates() ).to.deep.equal( {x: 10, y: 10 } );
+
+		sinon.stub( player, 'getCoordinates' ).returns( { x: 0, y: 10 } );
+		player.moveRight().animate();
+		expect( player.getCoordinates() ).to.deep.equal( {x: 0, y: 10 } );
+		
+		player.getCoordinates.restore();
+		expect( player.getCoordinates() ).to.deep.equal( {x: 11, y: 10 } );
+    });
+
+    it( 'should return "stubbed value"', function() {
+        this.f.returns( 'stubbed value' );
+        expect( this.f() ).to.equal( 'stubbed value' );
+    });
+
+    it( 'should throw an error with text ReferenceError', function() {
+        this.f.throws( new Error( 'ReferenceError' ) );
+        expect( this.f ).to.throw( 'ReferenceError' );
+    });
+
+    it( 'should change behavior based on arguments', function() {
+        this.f.withArgs( 5, true ).returns( true );
+        this.f.withArgs( 3 ).returns( false );
+        expect( this.f( 5, true ) ).to.be.true;
+        expect( this.f( 3 ) ).to.be.false;
+    });
+
+
+    it( 'should return different values on its first 5 calls', function() {
+        this.f.onFirstCall().returns( 1 );
+        this.f.onSecondCall().returns( 2 );
+        this.f.onThirdCall().returns( 3 );
+        this.f.onCall( 3 ).returns( true );
+        this.f.onCall( 4 ).returns( false );
+        expect( this.f() ).to.equal( 1 );
+        expect( this.f() ).to.equal( 2 );
+        expect( this.f() ).to.equal( 3 );
+        expect( this.f() ).to.be.true;
+        expect( this.f() ).to.be.false;
+    });
+
+    it( 'should return its second argument', function() {
+        this.f.returnsArg( 1 );
+        expect( this.f(true, 5) ).to.equal( 5 );
+    });
+
+    it( 'should call its first argument', function() {
+        var spy = sinon.spy();
+        this.f.callsArg( 0 );
+        this.f( spy );
+        expect( spy.calledOnce ).to.be.true;
+    });
+
+    it( 'should call its first argument with arguments 5, true', function() {
+        var spy = sinon.spy();
+        this.f.callsArgWith( 0, 5, true );
+        this.f( spy );
+        expect( spy.calledOnce ).to.be.true;
+        expect( spy.calledWith( 5, true ) ).to.be.true;
+    });
+
+    it( 'should call its first argument with a defined context', function() {
+        var context = {};
+        var spy = sinon.spy();
+        this.f.callsArgOn( 0, context );
+        this.f( spy );
+        expect( spy.calledOnce ).to.be.true;
+        expect( spy.calledOn( context ) ).to.be.true;
+    });
+
+    it( 'should call its first argument with a defined context and with argument 2', function() {
+        var context = {};
+        var spy = sinon.spy();
+        this.f.callsArgOnWith( 0, context, 2 );
+        this.f( spy );
+        expect( spy.calledOnce ).to.be.true;
+        expect( spy.calledOn( context ) ).to.be.true;
+        expect( spy.calledWith( 2 ) ).to.be.true;
+    });
+
+});
 
 
 
