@@ -647,9 +647,123 @@ describe( 'SinonJs Stubs', function() {
         expect( spy.calledOn( context ) ).to.be.true;
         expect( spy.calledWith( 2 ) ).to.be.true;
     });
-
 });
 
+describe( 'SinonJs Mocking Process', function() {
+    it( 'should demonstrate the mocking process', function() {
+    	var basket = { cashout: function() {} };
+
+		// 1. Start mocking
+		var mock = sinon.mock( basket );
+
+		// 2. formulate your expectations
+		mock.expects( 'cashout' )
+		    .exactly( 1 )       // to be called once, same as once()
+		    .withArgs( 1, 2 );  // to be called with specified arguments
+
+		// 3. Execute tested code
+		// ...
+		basket.cashout( 1, 2 );
+		// ...
+
+		// 4. Verify expectations
+		mock.verify();
+
+		// 5. Restore the object
+		mock.restore();
+    });
+});
+
+
+describe( 'SinonJs Mock Expectation', function() {
+
+    beforeEach( function() {
+    	this.model = new Backbone.Model();
+        this.mock = sinon.mock( this.model );
+    });
+
+    it( 'should call the set method at least  and at most 4 times', function() {
+		this.mock.expects( 'set' ).atLeast( 4 ).atMost( 4 );
+
+		this.model.set( 'a', 1 );
+		this.model.set( 'b', 2 );
+		this.model.set( 'c', 3 );
+		this.model.set( 'd', 4 );
+
+		this.mock.verify();    	
+    });
+
+    it( 'should call the set method exactly 4 times', function() {
+		this.mock.expects( 'set' ).exactly( 4 );
+
+		this.model.set( 'a', 1 );
+		this.model.set( 'b', 2 );
+		this.model.set( 'c', 3 );
+		this.model.set( 'd', 4 );
+
+		this.mock.verify();    	
+    });    
+
+    it( 'should never call the set method', function() {
+		this.mock.expects( 'set' ).never();
+
+		this.model.has( 'a' );
+
+		this.mock.verify();    	
+    });   
+
+    it( 'should call the set method once', function() {
+		this.mock.expects( 'set' ).once();
+
+		this.model.set( 'a', 1 );
+
+		this.mock.verify();    	
+    }); 
+
+    it( 'should call the set method twice', function() {
+		this.mock.expects( 'set' ).twice();
+
+		this.model.set( 'a', 1 );
+		this.model.set( 'b', 2 );
+
+		this.mock.verify();    	
+    });            
+
+    it( 'should call the set method thrice', function() {
+		this.mock.expects( 'set' ).thrice();
+
+		this.model.set( 'a', 1 );
+		this.model.set( 'b', 2 );
+		this.model.set( 'c', 3 );
+
+		this.mock.verify();    	
+    });  
+
+    it( 'should call the set method with argument "a"', function() {
+    	this.mock.expects( 'set' ).withArgs( 'a' );
+
+    	this.model.set( 'a', 1 );
+
+    	this.mock.verify();
+    });
+
+    it( 'should call the set method with exact argument "a" and 1', function() {
+    	this.mock.expects( 'set' ).withExactArgs( 'a', 1 );
+
+    	this.model.set( 'a', 1 );
+
+    	this.mock.verify();
+    });    
+
+    it( 'should call the set method with context this.model', function() {
+    	this.mock.expects( 'set' ).on( this.model );
+
+    	this.model.set( 'a', 1 );
+
+    	this.mock.verify();
+    });           
+
+});
 
 
 
