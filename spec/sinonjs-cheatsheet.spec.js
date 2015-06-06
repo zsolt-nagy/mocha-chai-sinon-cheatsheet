@@ -766,5 +766,43 @@ describe( 'SinonJs Mock Expectation', function() {
 });
 
 
+describe( 'Animation with SinonJs Fake Timer', function() {
+
+    beforeEach( function() {
+
+        this.clock = sinon.useFakeTimers();
+        this.$square = $( '<div class="moving-square"></div>' );
+        this.$square.appendTo( $( '#fixtures') );
+
+        playAnimation( this.$square );
+    });
+
+    afterEach( function() {
+        $( '#fixtures' ).empty();
+        this.clock.restore();
+    });
+
+    it( 'should move 10 pixels per 20 milliseconds', function() {
+        this.clock.tick( 20 );
+        expect( this.$square.css( 'left' ) ).to.equal( '10px' );
+    } );
+
+    it( 'should move to the right of the window @ speed 500px / second', function() {
+        var maxX = $( 'body' ).width() - 50;
+        var numOfSteps = Math.ceil( maxX / 10 );
+        var left = ( numOfSteps * 10 ) + 'px';
+        this.clock.tick( numOfSteps * 20 );
+        expect( this.$square.css( 'left' ) ).to.equal( left );
+    } );
+
+    it( 'should return to its original position @ speed 500px / second', function() {
+        var maxX = $( 'body' ).width() - 50;
+        var numOfSteps = Math.ceil( maxX / 10 ) * 2;
+        this.clock.tick( numOfSteps * 20 );
+        expect( this.$square.css( 'left' ) ).to.equal( '0px' );
+    } );
+
+});
+
 
 
