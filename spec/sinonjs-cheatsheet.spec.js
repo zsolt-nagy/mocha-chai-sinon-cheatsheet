@@ -647,7 +647,9 @@ describe( 'SinonJs Stubs', function() {
         expect( spy.calledOn( context ) ).to.be.true;
         expect( spy.calledWith( 2 ) ).to.be.true;
     });
+
 });
+
 
 describe( 'SinonJs Mocking Process', function() {
     it( 'should demonstrate the mocking process', function() {
@@ -801,8 +803,5 @@ describe( 'Animation with SinonJs Fake Timer', function() {
         this.clock.tick( numOfSteps * 20 );
         expect( this.$square.css( 'left' ) ).to.equal( '0px' );
     } );
-
+ 
 });
-
-
-
