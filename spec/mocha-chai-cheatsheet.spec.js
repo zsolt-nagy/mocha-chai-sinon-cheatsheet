@@ -100,7 +100,7 @@ describe( 'Mocha, Chai Expect Cheat Sheet', function() {
 		// check the existence of a key + check its value
 		expect( player ).to.have.property( 'name', 'Mario' );
 		// deep properties
-		expect( player ).to.have.deep.property( 'inventory.stars', 3 );
+		expect( player ).to.have.nested.property( 'inventory.stars', 3 );
 	} );
 
 	it( 'should check the length property', function() {

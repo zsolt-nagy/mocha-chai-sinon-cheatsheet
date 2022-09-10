@@ -104,7 +104,7 @@ describe( 'SinonJs Spies', function() {
 
         it( 'reset', function() {
             this.isIntegerSpy( 1 );
-            this.isIntegerSpy.reset();
+            this.isIntegerSpy.resetHistory();
             expect( this.isIntegerSpy.callCount ).to.equal( 0 );
         } );
 
